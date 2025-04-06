@@ -37,5 +37,7 @@ public class Inicializator : MonoBehaviour
     private void HandleSignalRConnection(bool _status)
     {
         Logger.Log($"SignalR connected");
+        string _sender = Application.isEditor ? "UnityEditor" : "WebGL";
+        SignalRManager.Instance.SendMessage(_sender, "Hello friend!");
     }
 }

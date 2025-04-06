@@ -63,18 +63,20 @@ namespace TicTacToe.CSignalR
             }
         }
 
-
+        private void ReceiveMessage(string _json)
+        {
+            MessageData _data = JsonConvert.DeserializeObject<MessageData>(_json);
+            OnReceivedMessage?.Invoke(_data);
+            Debug.Log("Received message: "+_json);
+        }
+        
+        
+        
         public void SendMessage(string _sender, string _message)
         {
             MessageData _data = new MessageData { Username = _sender, Message = _message };
             string _json = JsonConvert.SerializeObject(_data);
             connection.SendAsync("SendMessage", _json);
-        }
-
-        private void ReceiveMessage(string _json)
-        {
-            MessageData _data = JsonConvert.DeserializeObject<MessageData>(_json);
-            OnReceivedMessage?.Invoke(_data);
         }
     }
 }

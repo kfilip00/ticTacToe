@@ -5,11 +5,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>TicTacToe</title>
     <script src="https://www.unpkg.com/@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
+    <script src="Scripts/SignalRManager.js"></script>
   </head>
   <body style="text-align: center">
     <canvas id="unity-canvas" width=960 height=600 style="width: 960px; height: 600px; background: #231F20"></canvas>
     <script src="Build/TicTacToe.loader.js"></script>
     <script>
+      var unityInstance = null;
+      
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         var meta = document.createElement('meta');
         meta.name = 'viewport';
@@ -25,6 +28,8 @@
         companyName: "DefaultCompany",
         productName: "TicTacToe",
         productVersion: "1.0",
+      }).then((unity) => {
+        unityInstance = unity;
       });
     </script>
   </body>

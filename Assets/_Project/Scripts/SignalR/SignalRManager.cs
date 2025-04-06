@@ -1,82 +1,31 @@
 using System;
-using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json;
-using TicTacToe.CSignalR.Data;
-using UnityEngine;
-using Type = LoggerNS.Type;
+using UnitySignalR;
 
-namespace TicTacToe.CSignalR
+public class SignalRManager : SignalRHandler
 {
-    public class SignalRManager : MonoBehaviour
+    public static SignalRManager Instance;
+
+    private void Awake()
     {
-        private string ServerUri => useLocalHost 
-            ? "http://localhost:5113/"
-            : "https://tictactoe-250326183105.azurewebsites.net/";
-        private string GameHub => ServerUri + "hubs/game";
-
-        public static Action<MessageData> OnReceivedMessage;
-
-        public static SignalRManager Instance;
-
-        [SerializeField] private bool useLocalHost;
-
-        private HubConnection connection;
-        private string connectionId;
-
-        private void Awake()
+        if (Instance == null)
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            Setup();
         }
-
-        public async void StartConnection(Action<bool> _callBack)
+        else
         {
-            if (connection is { State: HubConnectionState.Connected })
-            {
-                _callBack.Invoke(true);
-                return;
-            }
-
-            connection = new HubConnectionBuilder()
-                .WithUrl(GameHub)
-                .WithAutomaticReconnect()
-                .Build();
-            
-            connection.On<string>(nameof(ReceiveMessage), ReceiveMessage);
-
-            try
-            {
-                await connection.StartAsync();
-                _callBack?.Invoke(true);
-            }
-            catch (Exception _error)
-            {
-                Logger.Log($"Trying to connect with: {GameHub} Failed with error: {_error}", _type: Type.Error);
-                _callBack?.Invoke(false);
-            }
+            Destroy(gameObject);
         }
+    }
+    
+    public void StartConnection(Action<ConnectionResponse> _callBack)
+    {
+        Client.StartConnection(SignalRSetup.GameHub,_callBack);
+    }
 
-        private void ReceiveMessage(string _json)
-        {
-            MessageData _data = JsonConvert.DeserializeObject<MessageData>(_json);
-            OnReceivedMessage?.Invoke(_data);
-            Debug.Log("Received message: "+_json);
-        }
-        
-        
-        
-        public void SendMessage(string _sender, string _message)
-        {
-            MessageData _data = new MessageData { Username = _sender, Message = _message };
-            string _json = JsonConvert.SerializeObject(_data);
-            connection.SendAsync("SendMessage", _json);
-        }
+    private void TalkToServer(string _function, string _jsonData)
+    {
+        Client.TalkToServer(_function,_jsonData);
     }
 }

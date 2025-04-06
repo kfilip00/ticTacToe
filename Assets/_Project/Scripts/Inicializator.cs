@@ -1,5 +1,5 @@
-using TicTacToe.CSignalR;
 using UnityEngine;
+using UnitySignalR;
 
 public class Inicializator : MonoBehaviour
 {
@@ -34,10 +34,8 @@ public class Inicializator : MonoBehaviour
         SignalRManager.Instance.StartConnection(HandleSignalRConnection);
     }
 
-    private void HandleSignalRConnection(bool _status)
+    private void HandleSignalRConnection(ConnectionResponse _response)
     {
-        Logger.Log($"SignalR connected");
-        string _sender = Application.isEditor ? "UnityEditor" : "WebGL";
-        SignalRManager.Instance.SendMessage(_sender, "Hello friend!");
+        Debug.Log(_response);
     }
 }

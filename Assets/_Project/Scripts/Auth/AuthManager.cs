@@ -4,7 +4,6 @@ using TicTacToe.Firebase;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
-using Type = LoggerNS.Type;
 
 public class AuthManager : MonoBehaviour
 {

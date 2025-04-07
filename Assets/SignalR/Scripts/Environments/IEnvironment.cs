@@ -9,5 +9,4 @@ namespace UnitySignalR
             return GetHost() + "/hubs/game";
         }
     }
-
 }

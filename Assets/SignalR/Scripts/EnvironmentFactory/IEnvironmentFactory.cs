@@ -5,4 +5,3 @@ namespace UnitySignalR
         IEnvironment Create(bool _isTesting);
     }
 }
-

@@ -5,9 +5,8 @@ function StartConnection(jsonData)
 {
     const data = JSON.parse(jsonData);
     const url = data.Url;
-    const receiverObjectName = data.ReceiverObjectName;
+    unityObjectName = data.ReceiverObjectName;
     
-    unityObjectName = receiverObjectName;
     if (connection) 
     {
         TellUnityAboutConnectionResult(CreateConnectionResponse(2, "Already connected"));

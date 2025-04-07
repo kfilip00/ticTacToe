@@ -18,5 +18,5 @@ namespace UnitySignalR
         {
             return $"[{ConnectionStatus}] {Message}";
         }
-    }   
+    }
 }

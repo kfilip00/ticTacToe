@@ -21,7 +21,7 @@ namespace UnitySignalR
         {
             Type _thisType = GetType();
             MethodInfo _methodInfo = _thisType.GetMethod(_function, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            
+
             if (_methodInfo == null)
             {
                 Debug.Log($"No method found for function: {_function}");
@@ -31,7 +31,7 @@ namespace UnitySignalR
             try
             {
                 ParameterInfo[] _parameters = _methodInfo.GetParameters();
-                
+
                 if (_parameters.Length == 0)
                 {
                     _methodInfo.Invoke(this, null);
@@ -58,4 +58,3 @@ namespace UnitySignalR
         }
     }
 }
-

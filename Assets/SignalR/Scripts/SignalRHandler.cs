@@ -1,18 +1,29 @@
-using UnityEngine;
+using System;
+using Newtonsoft.Json;
 
 namespace UnitySignalR
 {
-    [RequireComponent(typeof(SignalRSetup))]
-    public class SignalRHandler : MonoBehaviour
+    public class SignalRHandler : IServerFunctions
     {
-        protected SignalRSetup SignalRSetup;
-        protected SignalRClient Client;
+        private IClient client;
+        private IEnvironment environment;
 
-        protected virtual void Setup()
+        public void Initialize(IClientFactory _clientFactory, IEnvironmentFactory _environmentFactory, bool _isTesting)
         {
-            SignalRSetup = GetComponent<SignalRSetup>();
-            Client = Application.isEditor ? gameObject.AddComponent<UnityClient>() : gameObject.AddComponent<WebGlClient>();
-            Client.Setup(gameObject.name);
+            client = _clientFactory.CreateClient();
+            environment = _environmentFactory.Create(_isTesting);
+        }
+
+        public void StartConnection(Action<ConnectionResponse> _callBack)
+        {
+            client.StartConnection(environment.GetGameHub(),_callBack);
+        }
+
+        public void SendMessage(string _sender, string _message)
+        {
+            MessageData _messageData = new MessageData { Sender = _sender, Message = _message };
+            string _data = JsonConvert.SerializeObject(_messageData);
+            client.TalkToServer("SendMessage", _data);
         }
     }
 }

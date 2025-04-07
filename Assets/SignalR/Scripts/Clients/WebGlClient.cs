@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace UnitySignalR
 {
-    public class WebGlClient : SignalRClient
+    public class WebGlClient : UnityClient
     {
         [DllImport("__Internal")]
         private static extern void StartConnectionJS(string _jsonData);
@@ -17,7 +17,7 @@ namespace UnitySignalR
         public override void StartConnection(string _url, Action<ConnectionResponse> _callback)
         {
             connectionCallback = _callback;
-            string _jsonData = JsonConvert.SerializeObject(new { Url = _url, ReceiverObjectName });
+            string _jsonData = JsonConvert.SerializeObject(new { Url = _url });
             StartConnectionJS(_jsonData);
         }
 
@@ -25,18 +25,6 @@ namespace UnitySignalR
         {
             string _json = JsonConvert.SerializeObject(new { FunctionName = _functionName, JsonData = _jsonData });
             TalkToServerJS(_json);
-        }
-
-        public void ReceiveConnectionStatusFromJS(string _json)
-        {
-            ConnectionResponse _response = JsonConvert.DeserializeObject<ConnectionResponse>(_json);
-            connectionCallback?.Invoke(_response);
-            connectionCallback = null;
-        }
-
-        public void ReceiveMessageFromServerJS(string _function, string _jsonData)
-        {
-            ReceiveMessageFromServer(_function,_jsonData);
         }
     }
 }

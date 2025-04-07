@@ -1,0 +1,24 @@
+using UnityEngine;
+using UnitySignalR;
+
+namespace CSignalr.Demo
+{
+    public class Initializer : MonoBehaviour
+    {
+        [SerializeField] private bool isTesting;
+
+        private SignalRHandler signalRHandler;
+        
+        private void Start()
+        {
+            signalRHandler = new SignalRHandler();
+            signalRHandler.Initialize(new ClientFactory(), new EnvironmentFactory(),isTesting);
+            signalRHandler.StartConnection(HandleConnectionResponse);
+        }
+
+        private void HandleConnectionResponse(ConnectionResponse _connectionResponse)
+        {
+            UIManager.Instance.Setup(signalRHandler);
+        }
+    }
+}

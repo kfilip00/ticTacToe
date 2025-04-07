@@ -1,39 +1,61 @@
 using System;
-using Microsoft.AspNetCore.SignalR.Client;
+using System.Reflection;
+using Newtonsoft.Json;
+using UnityEngine;
 
 namespace UnitySignalR
 {
-    public class UnityClient : SignalRClient
+    public class UnityClient : IClient
     {
-        private HubConnection connection;
-        private string connectionId;
-
-        public override async void StartConnection(string _gameHubUrl, Action<ConnectionResponse> _callBack)
+        public virtual void StartConnection(string _url, Action<ConnectionResponse> _callback)
         {
-            if (connection is { State: HubConnectionState.Connected })
+            throw new NotImplementedException();
+        }
+
+        public virtual void TalkToServer(string _functionName, string _jsonData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReceiveMessageFromServer(string _function, string _jsonData)
+        {
+            Type _thisType = GetType();
+            MethodInfo _methodInfo = _thisType.GetMethod(_function, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            
+            if (_methodInfo == null)
             {
-                _callBack.Invoke(new ConnectionResponse(ConnectionStatus.AlreadyConnected,"Already connected"));
+                Debug.Log($"No method found for function: {_function}");
                 return;
             }
 
-            connection = new HubConnectionBuilder().WithUrl(_gameHubUrl).WithAutomaticReconnect().Build();
-
-            connection.On<string,string>(nameof(ReceiveMessageFromServer), ReceiveMessageFromServer);
-
             try
             {
-                await connection.StartAsync();
-                _callBack?.Invoke(new ConnectionResponse(ConnectionStatus.Successful, "Successfully connected"));
+                ParameterInfo[] _parameters = _methodInfo.GetParameters();
+                
+                if (_parameters.Length == 0)
+                {
+                    _methodInfo.Invoke(this, null);
+                }
+                else if (_parameters.Length == 1)
+                {
+                    _methodInfo.Invoke(this, new object[] { _jsonData });
+                }
+                else
+                {
+                    Debug.Log($"Method {_function} has an unsupported signature.");
+                }
             }
-            catch (Exception _error)
+            catch (Exception _ex)
             {
-                _callBack?.Invoke(new ConnectionResponse(ConnectionStatus.Failed, _error.ToString()));
+                Debug.Log($"Error invoking method {_function}: {_ex.Message}");
             }
         }
 
-        public override void TalkToServer(string _function, string _jsonData)
+        public void ReceiveMessage(string _jsonData)
         {
-            connection.SendAsync(_function, _jsonData);
+            MessageData _messageData = JsonConvert.DeserializeObject<MessageData>(_jsonData);
+            SignalREvents.HandleReceivedMessage?.Invoke(_messageData);
         }
     }
 }
+

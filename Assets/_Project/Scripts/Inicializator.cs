@@ -31,7 +31,7 @@ public class Inicializator : MonoBehaviour
         }
 
         DataManager.Instance.SubscribeEvents();
-        SignalRManager.Instance.StartConnection(HandleSignalRConnection);
+        // SignalRManager.Instance.StartConnection(HandleSignalRConnection);
     }
 
     private void HandleSignalRConnection(ConnectionResponse _response)

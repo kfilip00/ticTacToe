@@ -6,9 +6,7 @@ namespace UnitySignalR
     {
         public IClient CreateClient()
         {
-            return Application.isEditor 
-                ? new EditorClient() 
-                : new WebGlClient();
+            return Application.isEditor ? new EditorClient() : new WebGlClient();
         }
     }
 }

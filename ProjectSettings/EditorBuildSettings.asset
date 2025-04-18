@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/SignalR/Demo/Scenes/Demo.unity
     guid: 621c60cab29ce1f4bbf5f754edc2d8f8
   - enabled: 1
-    path: Assets/_Project/Scenes/SampleScene.unity
+    path: Assets/_Project/Scenes/Inicializator.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}

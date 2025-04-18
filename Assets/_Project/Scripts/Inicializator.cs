@@ -4,14 +4,10 @@ using UnityEngine;
 public class Inicializator : MonoBehaviour
 {
     [SerializeField] private WebRequestHandler webRequestHandler;
+    private AuthenticationHandler authentication;
+    
     private void Start()
     {
-        Auth();
-    }
-
-    private void Auth()
-    {
-        AuthenticationHandler _authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
-       
+        authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
     }
 }

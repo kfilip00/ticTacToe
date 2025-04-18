@@ -18,6 +18,12 @@ namespace CSignalr.Demo
 
         private void HandleConnectionResponse(ConnectionResponse _connectionResponse)
         {
+            if (_connectionResponse.ConnectionStatus == ConnectionStatus.Failed)
+            {
+                Debug.LogError(_connectionResponse.Message);
+                return;
+            }
+            
             UIManager.Instance.Setup(signalRHandler);
         }
     }

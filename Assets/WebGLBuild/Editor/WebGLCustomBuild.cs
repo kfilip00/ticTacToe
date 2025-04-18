@@ -24,6 +24,7 @@ namespace CustomBuildWebGL
             CopyEverything(_destinationPath);
             DeleteMetaFiles(_destinationPath);
             RenameFiles(_destinationPath);
+            SendVariablesToIndex(_destinationPath);
         }
 
         private static void DeleteEverythingButBuildFolder(string _destinationPath)
@@ -99,7 +100,7 @@ namespace CustomBuildWebGL
             }
             else
             {
-                Logger.Log("Build folder not found; skipping file renaming.");
+                Debug.Log("Build folder not found; skipping file renaming.");
             }
         }
 
@@ -132,6 +133,14 @@ namespace CustomBuildWebGL
                 string _newFilePath = Path.Combine(_file.DirectoryName, _newFileName);
                 _file.MoveTo(_newFilePath);
             }
+        }
+
+        private static void SendVariablesToIndex(string _destinationPath)
+        {
+            string _indexPath = Path.Combine(_destinationPath, "index.html");
+            string _content = File.ReadAllText(_indexPath);
+            _content = _content.Replace("{{{ PRODUCT_NAME }}}", Application.productName);
+            File.WriteAllText(_indexPath, _content);
         }
     }
 }

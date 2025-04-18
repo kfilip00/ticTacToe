@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UnitySignalR
 {
-    public class UnityClient : IClient
+    public class BaseClient : IClient
     {
         public virtual void StartConnection(string _url, Action<ConnectionResponse> _callback)
         {

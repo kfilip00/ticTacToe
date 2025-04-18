@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using LoggerNS;
+using Newtonsoft.Json;
 using Type = LoggerNS.Type;
 
 public class Logger : MonoBehaviour
@@ -24,6 +25,11 @@ public class Logger : MonoBehaviour
       {
          Destroy(gameObject);
       }
+   }
+
+   public static void Log(object _object)
+   {
+      Log(JsonConvert.SerializeObject(_object));
    }
 
    public static void Log(string _message, Category _category = Category.Default, GameObject _sender = null, Type _type = Type.Normal)

@@ -3,13 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>TicTacToe</title>
-    <script src="https://www.unpkg.com/@microsoft/signalr@8.0.0/dist/browser/signalr.min.js"></script>
-    <script src="Scripts/SignalRManager.js"></script>
+    <title>{{{ PRODUCT_NAME }}}</title>
   </head>
   <body style="text-align: center">
     <canvas id="unity-canvas" width=960 height=600 style="width: 960px; height: 600px; background: #231F20"></canvas>
-    <script src="Build/TicTacToe.loader.js"></script>
+    <script src="Build/{{{ PRODUCT_NAME }}}.loader.js"></script>
     <script>
       var unityInstance = null;
       
@@ -21,12 +19,12 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/TicTacToe.data",
-        frameworkUrl: "Build/TicTacToe.framework.js",
-        codeUrl: "Build/TicTacToe.wasm",
+        dataUrl: "Build/{{{ PRODUCT_NAME }}}.data",
+        frameworkUrl: "Build/{{{ PRODUCT_NAME }}}.framework.js",
+        codeUrl: "Build/{{{ PRODUCT_NAME }}}.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "TicTacToe",
+        productName: "{{{ PRODUCT_NAME }}}",
         productVersion: "1.0",
       }).then((unity) => {
         unityInstance = unity;

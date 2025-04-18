@@ -1,8 +1,9 @@
+using Authentication;
 using UnityEngine;
-using UnitySignalR;
 
 public class Inicializator : MonoBehaviour
 {
+    [SerializeField] private WebRequestHandler webRequestHandler;
     private void Start()
     {
         Auth();
@@ -10,32 +11,7 @@ public class Inicializator : MonoBehaviour
 
     private void Auth()
     {
-        AuthManager.Instance.Auth(HandleAuth);
-    }
-
-    private void HandleAuth(bool _didAuth)
-    {
-        if (!_didAuth)
-        {
-            return;
-        }
-
-        DataManager.Instance.CollectData(HandleCollectData);
-    }
-
-    private void HandleCollectData(bool _didCollectData)
-    {
-        if (!_didCollectData)
-        {
-            return;
-        }
-
-        DataManager.Instance.SubscribeEvents();
-        // SignalRManager.Instance.StartConnection(HandleSignalRConnection);
-    }
-
-    private void HandleSignalRConnection(ConnectionResponse _response)
-    {
-        Debug.Log(_response);
+        AuthenticationHandler _authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
+       
     }
 }

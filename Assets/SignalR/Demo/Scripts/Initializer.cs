@@ -11,8 +11,7 @@ namespace CSignalr.Demo
         
         private void Start()
         {
-            signalRHandler = new SignalRHandler();
-            signalRHandler.Initialize(new ClientFactory(), new EnvironmentFactory(),isTesting);
+            signalRHandler = new SignalRHandler(new ClientFactory(), new EnvironmentFactory(),isTesting);
             signalRHandler.StartConnection(HandleConnectionResponse);
         }
 

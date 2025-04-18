@@ -8,7 +8,7 @@ namespace UnitySignalR
         private IClient client;
         private IEnvironment environment;
 
-        public void Initialize(IClientFactory _clientFactory, IEnvironmentFactory _environmentFactory, bool _isTesting)
+        public SignalRHandler(IClientFactory _clientFactory, IEnvironmentFactory _environmentFactory, bool _isTesting)
         {
             client = _clientFactory.CreateClient();
             environment = _environmentFactory.Create(_isTesting);

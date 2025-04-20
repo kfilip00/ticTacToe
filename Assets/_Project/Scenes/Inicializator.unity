@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058f96f667641074889217b0adb01901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WebRequestHandler: {fileID: 223373151}
+  webRequestHandler: {fileID: 223373151}
 --- !u!4 &1655604265
 Transform:
   m_ObjectHideFlags: 0
@@ -354,7 +354,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b6aa91ae93c2d40ac727890c761065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WebRequestHandler: {fileID: 223373151}
+  webRequestHandler: {fileID: 223373151}
+  authentication: {fileID: 1655604264}
   playerName: hello
 --- !u!1 &1905079736
 GameObject:

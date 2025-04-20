@@ -1,3 +1,4 @@
+using System;
 using Authentication;
 using NaughtyAttributes;
 using UnityEngine;
@@ -8,12 +9,39 @@ namespace Test
     {
         [SerializeField] private WebRequestHandler webRequestHandler;
 
+        private AuthenticationHandler authentication;
+
+        [Button]
+        public void Setup()
+        {
+            authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
+        }
+
         [Button]
         private void SignIn()
         {
-            AuthenticationHandler _authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
             var _credentials = GetCredentials();
-            _authentication.SignIn(_credentials.Item1, _credentials.Item2, HandleSignInResponse);
+            authentication.SignIn(_credentials.Item1, _credentials.Item2, HandleSignInResponse);
+        }
+
+        public void SignIn(Action<bool> _callback)
+        {
+            var _credentials = GetCredentials();
+            authentication.SignIn(_credentials.Item1, _credentials.Item2, CallCallback);
+            return;
+
+            void CallCallback(Response _response)
+            {
+                if (!_response.IsSuccessful)
+                {
+                    _callback?.Invoke(false);
+                    HandleSignInResponse(_response);
+                    return;
+                }
+                
+                _callback?.Invoke(true);
+                HandleSignInResponse(_response);
+            }
         }
 
         private void HandleSignInResponse(Response _response)
@@ -30,9 +58,8 @@ namespace Test
         [Button]
         private void SignUp()
         {
-            AuthenticationHandler _authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
             var _credentials = GetCredentials();
-            _authentication.SignUp(_credentials.Item1, _credentials.Item2, HandleSignUpResponse);
+            authentication.SignUp(_credentials.Item1, _credentials.Item2, HandleSignUpResponse);
         }
 
         private void HandleSignUpResponse(Response _response)
@@ -49,6 +76,17 @@ namespace Test
         private (string, string) GetCredentials()
         {
             return ("unityEditor@tictactoe.com", "Kjkszpj123");
+        }
+
+        [Button]
+        private void IsAuthenticated()
+        {
+            Debug.Log("Is authenticated: "+ authentication.IsAuthenticated());
+        }
+
+        public AuthenticationHandler GetAuthenticationHandler()
+        {
+            return authentication;
         }
     }
 }

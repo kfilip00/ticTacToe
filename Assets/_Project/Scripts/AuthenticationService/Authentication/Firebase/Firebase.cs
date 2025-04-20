@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Authentication.Firebase
 {
-    public class FirebaseAuthenticator : IAuthentication
+    public class Firebase : IAuthentication
     {
         private const string WEB_API_KEY = "AIzaSyAWWXYVDfI0HEfR-0G0KJERPYck-l5yf9E";
         private IWebRequests webRequests;
@@ -12,7 +12,7 @@ namespace Authentication.Firebase
         private string currentIdToken;
         private DateTime tokenExpirationTime;
         
-        public FirebaseAuthenticator(IWebRequests _webRequests)
+        public Firebase(IWebRequests _webRequests)
         {
             webRequests = _webRequests;
         }
@@ -71,7 +71,7 @@ namespace Authentication.Firebase
             
             webRequests.Post(_url,_params,HandleSuccessfulSignUp, HandleUnsuccessfulSignUp);
         }
-        
+
         private void HandleSuccessfulSignUp(string _data)
         {
             SignUpResponse _signUpResponse = JsonConvert.DeserializeObject<SignUpResponse>(_data);

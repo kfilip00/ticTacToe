@@ -306,6 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1655604265}
   - component: {fileID: 1655604264}
+  - component: {fileID: 1655604266}
   m_Layer: 0
   m_Name: Tests
   m_TagString: Untagged
@@ -325,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058f96f667641074889217b0adb01901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  webRequestHandler: {fileID: 223373151}
+  WebRequestHandler: {fileID: 223373151}
 --- !u!4 &1655604265
 Transform:
   m_ObjectHideFlags: 0
@@ -341,6 +342,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1655604266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655604263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09b6aa91ae93c2d40ac727890c761065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WebRequestHandler: {fileID: 223373151}
+  playerName: hello
 --- !u!1 &1905079736
 GameObject:
   m_ObjectHideFlags: 0

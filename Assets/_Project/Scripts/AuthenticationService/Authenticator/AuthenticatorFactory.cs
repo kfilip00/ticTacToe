@@ -6,7 +6,7 @@ namespace Authentication
     {
         public IAuthentication Create(IWebRequests _webRequests)
         {
-            return new FirebaseAuthenticator(_webRequests);
+            return new Firebase.Firebase(_webRequests);
         }
     }
 }

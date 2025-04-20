@@ -75,7 +75,35 @@ public class WebRequestHandler : MonoBehaviour, IWebRequests
         }
         else
         {
-            _onError?.Invoke(null);
+            _onError?.Invoke(_webRequest.downloadHandler.text);
         }
+    }
+    
+    public void Patch(string _uri, string _jsonData, Action<string> _onSuccess, Action<string> _onError)
+    {
+        StartCoroutine(PatchRequest(_uri, _jsonData, _onSuccess, _onError));
+    }
+    
+    private IEnumerator PatchRequest(string _uri, string _jsonData, Action<string> _onSuccess, Action<string> _onError)
+    {
+        using UnityWebRequest _webRequest = new UnityWebRequest(_uri, "PATCH");
+        byte[] _jsonToSend = new System.Text.UTF8Encoding().GetBytes(_jsonData);
+        _webRequest.uploadHandler = new UploadHandlerRaw(_jsonToSend);
+        _webRequest.downloadHandler = new DownloadHandlerBuffer();
+        _webRequest.SetRequestHeader("Content-Type", "application/json");
+
+        yield return _webRequest.SendWebRequest();
+
+        if (_webRequest.result == UnityWebRequest.Result.Success)
+        {
+            _onSuccess?.Invoke(_webRequest.downloadHandler.text);
+        }
+        else
+        {
+            _onError?.Invoke(_webRequest.downloadHandler.text);
+        }
+
+        _webRequest.uploadHandler.Dispose();
+        _webRequest.downloadHandler.Dispose();
     }
 }

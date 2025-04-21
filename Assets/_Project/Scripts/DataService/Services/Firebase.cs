@@ -8,18 +8,16 @@ namespace DataService
         private const string DATABASE_URL = "https://tictactoe-25485-default-rtdb.firebaseio.com";
         private const string PLAYERS_KEY = "players";
         
-        private readonly string playerIdentifier;
-        private readonly string playerToken;
         private readonly IWebRequests webRequests;
+        private AuthenticationHandler authentication;
         
         private string PlayersURL => $"{DATABASE_URL}/{PLAYERS_KEY}";
-        private string PlayerURL => $"{PlayersURL}/{playerIdentifier}";
+        private string PlayerURL => $"{PlayersURL}/{authentication.GetPlayerIdentifier()}";
         
         
-        public Firebase(string _playerIdentifier, string _playerToken, IWebRequests _webRequests)
+        public Firebase(AuthenticationHandler _authentication, IWebRequests _webRequests)
         {
-            playerIdentifier = _playerIdentifier;
-            playerToken = _playerToken;
+            authentication = _authentication;
             webRequests = _webRequests;
         }
         
@@ -83,7 +81,7 @@ namespace DataService
 
         private string GetPlayerUrlWithAuthToken()
         {
-            return $"{PlayerURL}.json?auth={playerToken}";
+            return $"{PlayerURL}.json?auth={authentication.GetPlayerToken()}";
         }
     }
 }

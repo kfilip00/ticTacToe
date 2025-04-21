@@ -9,9 +9,9 @@ public class AuthenticationHandler
     private string playerIdentifier;
     private string playerToken;
     
-    public AuthenticationHandler(IAuthenticatorFactory _authenticatorFactory, IWebRequests _webRequests)
+    public AuthenticationHandler(Config _config,IAuthenticatorFactory _authenticatorFactory, IWebRequests _webRequests)
     {
-        authentication = _authenticatorFactory.Create(_webRequests);
+        authentication = _authenticatorFactory.Create(_config,_webRequests);
     }
 
     public void SignIn(string _email, string _password, Action<Response> _callback)

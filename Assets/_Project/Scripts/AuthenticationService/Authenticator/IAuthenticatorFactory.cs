@@ -2,6 +2,6 @@ namespace Authentication
 {
     public interface IAuthenticatorFactory
     {
-        IAuthentication Create(IWebRequests _webRequests);
+        IAuthentication Create(Config _config,IWebRequests _webRequests);
     }   
 }

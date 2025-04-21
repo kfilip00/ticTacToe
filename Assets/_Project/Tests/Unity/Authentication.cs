@@ -7,6 +7,7 @@ namespace Test
 {
     public class Authentication : MonoBehaviour
     {
+        [SerializeField] private Configuration configuration;
         [SerializeField] private WebRequestHandler webRequestHandler;
 
         private AuthenticationHandler authentication;
@@ -14,7 +15,7 @@ namespace Test
         [Button]
         public void Setup()
         {
-            authentication = new AuthenticationHandler(new AuthenticatorFactory(), webRequestHandler);
+            authentication = new AuthenticationHandler(configuration.GetConfig(),new AuthenticatorFactory(), webRequestHandler);
         }
 
         [Button]

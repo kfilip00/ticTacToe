@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/SignalR/Demo/Scenes/Demo.unity
+    path: Assets/_Project/Scripts/SignalR/Demo/Scenes/Demo.unity
     guid: 621c60cab29ce1f4bbf5f754edc2d8f8
   - enabled: 1
     path: Assets/_Project/Scenes/Inicializator.unity

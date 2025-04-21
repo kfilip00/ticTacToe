@@ -96,7 +96,7 @@ public class Logger : MonoBehaviour
       _log = $"{DateTime.Now}: {_log}\n\n---------------";
       try
       {
-         File.AppendAllText(FilePath, _log + Environment.NewLine);
+         File.AppendAllText(FilePath, _log + System.Environment.NewLine);
       }
       catch (Exception _e)
       {

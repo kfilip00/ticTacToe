@@ -7,6 +7,7 @@ namespace Test
 {
     public class Database : MonoBehaviour
     {
+        [SerializeField] private Configuration configuration;
         [SerializeField] private WebRequestHandler webRequestHandler;
         [SerializeField] private Authentication authentication;
         [SerializeField] private string playerName;
@@ -29,7 +30,7 @@ namespace Test
                 }
 
                 var _auth = authentication.GetAuthenticationHandler();
-                dataHandler = new DataHandler(new DataServiceFactory(), _auth.GetPlayerIdentifier(), _auth.GetPlayerToken(), webRequestHandler);
+                dataHandler = new DataHandler(configuration.GetConfig(),new DataServiceFactory(), _auth, webRequestHandler);
             }
         }
 

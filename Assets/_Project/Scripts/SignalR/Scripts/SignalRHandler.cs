@@ -1,4 +1,5 @@
 using System;
+using Configuration;
 using Newtonsoft.Json;
 
 namespace UnitySignalR
@@ -8,10 +9,10 @@ namespace UnitySignalR
         private IClient client;
         private IEnvironment environment;
 
-        public SignalRHandler(IClientFactory _clientFactory, IEnvironmentFactory _environmentFactory, bool _isTesting)
+        public SignalRHandler(Config _config,IClientFactory _clientFactory, IEnvironmentFactory _environmentFactory)
         {
             client = _clientFactory.CreateClient();
-            environment = _environmentFactory.Create(_isTesting);
+            environment = _environmentFactory.Create(_config.IsTesting);
         }
 
         public void StartConnection(Action<ConnectionResponse> _callBack)

@@ -305,8 +305,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1655604265}
+  - component: {fileID: 1655604267}
   - component: {fileID: 1655604264}
   - component: {fileID: 1655604266}
+  - component: {fileID: 1655604268}
   m_Layer: 0
   m_Name: Tests
   m_TagString: Untagged
@@ -326,6 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058f96f667641074889217b0adb01901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configuration: {fileID: 1655604267}
   webRequestHandler: {fileID: 223373151}
 --- !u!4 &1655604265
 Transform:
@@ -354,9 +357,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09b6aa91ae93c2d40ac727890c761065, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configuration: {fileID: 1655604267}
   webRequestHandler: {fileID: 223373151}
   authentication: {fileID: 1655604264}
-  playerName: hello
+  playerName: hello3
+--- !u!114 &1655604267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655604263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 878b918d1d93a124d8569e970d41c5f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1655604268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655604263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a4ee0a2b1a12ad4ba63da1a17a58d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configuration: {fileID: 1655604267}
+  sender: filip
+  message: test123
 --- !u!1 &1905079736
 GameObject:
   m_ObjectHideFlags: 0

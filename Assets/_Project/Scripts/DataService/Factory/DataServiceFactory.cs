@@ -1,10 +1,19 @@
+using System;
+using Configuration;
+
 namespace DataService
 {
     public class DataServiceFactory : IDataServiceFactory
     {
-        public IDataService Create(string _playerIdentifier, string _playerToken, IWebRequests _webRequests)
+        public IDataService Create(Config _config,AuthenticationHandler _authentication, IWebRequests _webRequests)
         {
-            return new Firebase(_playerIdentifier, _playerToken, _webRequests);
+            switch (_config.Database)
+            {
+                case DatabaseType.Firebase:
+                    return new Firebase(_authentication, _webRequests);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }

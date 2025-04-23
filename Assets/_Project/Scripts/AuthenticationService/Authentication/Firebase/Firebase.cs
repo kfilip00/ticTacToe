@@ -139,5 +139,37 @@ namespace Authentication.Firebase
             PlayerPrefs.SetString(REFRESH_TOKEN_KEY, _refreshToken);
             PlayerPrefs.Save();
         }
+        
+        public void SendPasswordResetEmail(string _email, Action<Response> _callback)
+        {
+            string _params = "{\"requestType\":\"PASSWORD_RESET\",\"email\":\"" + _email + "\"}";
+            string _url = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=" + WEB_API_KEY;
+            callBack = _callback;
+
+            webRequests.Post(_url, _params, HandleSuccessfulPasswordReset, HandleUnsuccessfulPasswordReset);
+        }
+        
+        private void HandleSuccessfulPasswordReset(string _data)
+        {
+            PasswordResetResponse _resetResponse = JsonConvert.DeserializeObject<PasswordResetResponse>(_data);
+            Response _response = new Response
+            {
+                IsSuccessful = true,
+                Message = $"Password reset email sent to {_resetResponse.Email}"
+            };
+
+            callBack?.Invoke(_response);
+        }
+
+        private void HandleUnsuccessfulPasswordReset(string _error)
+        {
+            Response _response = new Response
+            {
+                IsSuccessful = false,
+                Message = _error
+            };
+
+            callBack?.Invoke(_response);
+        }
     }
 }

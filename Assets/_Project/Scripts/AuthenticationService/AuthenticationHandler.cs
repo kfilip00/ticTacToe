@@ -50,6 +50,11 @@ public class AuthenticationHandler
         playerToken = _response.IdToken;
         callback?.Invoke(_response);
     }
+
+    public void SendPasswordReset(string _email, Action<Response> _callback)
+    {
+        authentication.SendPasswordResetEmail(_email, _callback);
+    }
     
     public bool IsAuthenticated()
     {

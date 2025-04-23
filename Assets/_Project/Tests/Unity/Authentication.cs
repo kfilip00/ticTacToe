@@ -38,8 +38,8 @@ namespace Test
         [Button]
         private void SignIn()
         {
-            var _credentials = GetCredentials();
-            authentication.SignIn(_credentials.Item1, _credentials.Item2, HandleSignInResponse);
+            GetCredentials(out string _email,out string _password );
+            authentication.SignIn(_email, _password, HandleSignInResponse);
         }
 
         private void HandleSignInResponse(Response _response)
@@ -56,8 +56,8 @@ namespace Test
         [Button]
         private void SignUp()
         {
-            var _credentials = GetCredentials();
-            authentication.SignUp(_credentials.Item1, _credentials.Item2, HandleSignUpResponse);
+            GetCredentials(out string _email,out string _password );
+            authentication.SignUp(_email, _password, HandleSignUpResponse);
         }
 
         private void HandleSignUpResponse(Response _response)
@@ -71,9 +71,10 @@ namespace Test
             Debug.Log("Failed to sign up: " + _response.Message);
         }
 
-        private (string, string) GetCredentials()
+        private void GetCredentials(out string _email,out string _password)
         {
-            return ("unityEditor@tictactoe.com", "Kjkszpj123");
+            _email = "unityEditor@tictactoe.com";
+            _password = "Kjkszpj123";
         }
 
         [Button]
@@ -99,6 +100,24 @@ namespace Test
             Debug.Log("Successfully signed out");
         }
 
+        [Button]
+        private void SendPasswordReset()
+        {
+            GetCredentials(out string _email,out string _ );
+            authentication.SendPasswordReset(_email, HandlePasswordResetResponse);
+        }
+
+        private void HandlePasswordResetResponse(Response _response)
+        {
+            if (!_response.IsSuccessful)
+            {
+                Debug.Log("Failed to send password reset: "+_response.Message);
+                return;
+            }
+            
+            Debug.Log("Sent password reset: "+_response.Message);
+        }
+
         public AuthenticationHandler GetAuthenticationHandler()
         {
             return authentication;
@@ -106,8 +125,8 @@ namespace Test
         
         public void SignIn(Action<bool> _callback)
         {
-            var _credentials = GetCredentials();
-            authentication.SignIn(_credentials.Item1, _credentials.Item2, CallCallback);
+            GetCredentials(out string _email,out string _password );
+            authentication.SignIn(_email, _password, CallCallback);
             return;
 
             void CallCallback(Response _response)

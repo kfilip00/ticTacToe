@@ -1,9 +1,8 @@
 using System;
 using System.Collections;
-using UnityEngine;
 using UnityEngine.Networking;
 
-public class WebRequestHandler : MonoBehaviour, IWebRequests
+public class WebRequestHandler : Singleton<WebRequestHandler>, IWebRequests
 {
     public void Post(string _uri, string _jsonData, Action<string> _onSuccess, Action<string> _onError)
     {

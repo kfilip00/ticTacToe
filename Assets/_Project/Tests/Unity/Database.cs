@@ -18,20 +18,30 @@ namespace Test
         private void Setup()
         {
             authentication.Setup();
+        }
+
+        [Button]
+        private void SignIn()
+        {
             authentication.SignIn(ContinueSetup);
-            return;
+        }
 
-            void ContinueSetup(bool _isSuccessful)
+        [Button]
+        private void SignInAuto()
+        {
+            authentication.SignInAuto(ContinueSetup);
+        }
+        
+        private void ContinueSetup(bool _isSuccessful)
+        {
+            if (!_isSuccessful)
             {
-                if (!_isSuccessful)
-                {
-                    Debug.Log("Failed to authenticate");
-                    return;
-                }
-
-                var _auth = authentication.GetAuthenticationHandler();
-                dataHandler = new DataHandler(configuration.GetConfig(),new DataServiceFactory(), _auth, webRequestHandler);
+                Debug.Log("Failed to authenticate");
+                return;
             }
+
+            var _auth = authentication.GetAuthenticationHandler();
+            dataHandler = new DataHandler(configuration.GetConfig(),new DataServiceFactory(), _auth, webRequestHandler);
         }
 
         [Button]

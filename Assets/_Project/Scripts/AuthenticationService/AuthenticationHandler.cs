@@ -1,5 +1,6 @@
 using System;
 using Authentication;
+using Zenject;
 
 public class AuthenticationHandler
 {
@@ -9,6 +10,7 @@ public class AuthenticationHandler
     private string playerIdentifier;
     private string playerToken;
     
+    [Inject]
     public AuthenticationHandler(Config _config,IAuthenticatorFactory _authenticatorFactory, IWebRequests _webRequests)
     {
         authentication = _authenticatorFactory.Create(_config,_webRequests);
@@ -24,6 +26,12 @@ public class AuthenticationHandler
     {
         callback = _callback;
         authentication.SignUp(_email, _password, TryToSavePlayerData);
+    }
+
+    public void TryAutoSignIn(Action<Response> _callback)
+    {
+        callback = _callback;
+        authentication.TryAutoSignIn(TryToSavePlayerData);
     }
 
     private void TryToSavePlayerData(Response _response)

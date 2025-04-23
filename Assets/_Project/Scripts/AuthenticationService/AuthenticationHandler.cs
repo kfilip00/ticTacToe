@@ -34,6 +34,12 @@ public class AuthenticationHandler
         authentication.TryAutoSignIn(TryToSavePlayerData);
     }
 
+    public void SignOut(Action<Response> _callback)
+    {
+        callback = _callback;
+        authentication.SignOut(TryToSavePlayerData);
+    }
+
     private void TryToSavePlayerData(Response _response)
     {
         if (!_response.IsSuccessful)
@@ -61,5 +67,4 @@ public class AuthenticationHandler
     {
         return playerToken;
     }
-    
 }

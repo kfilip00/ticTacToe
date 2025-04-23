@@ -82,11 +82,27 @@ namespace Test
             Debug.Log("Is authenticated: "+ authentication.IsAuthenticated());
         }
 
+        [Button]
+        private void SignOut()
+        {
+            authentication.SignOut(HandleSignOutResponse);
+        }
+
+        private void HandleSignOutResponse(Response _response)
+        {
+            if (!_response.IsSuccessful)
+            {
+                Debug.Log("Failed to sign out: "+_response.Message);
+                return;
+            }
+            
+            Debug.Log("Successfully signed out");
+        }
+
         public AuthenticationHandler GetAuthenticationHandler()
         {
             return authentication;
         }
-        
         
         public void SignIn(Action<bool> _callback)
         {

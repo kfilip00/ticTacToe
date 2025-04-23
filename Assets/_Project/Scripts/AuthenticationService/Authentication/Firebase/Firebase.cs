@@ -113,17 +113,31 @@ namespace Authentication.Firebase
             });
         }
         
+        private void HandleUnsuccessfulRefreshIdToken(string _error)
+        {
+            callBack?.Invoke(new Response { IsSuccessful = false, Message = _error });
+        }
+        
+        public void SignOut(Action<Response> _callback)
+        {
+            if (!IsAuthenticated())
+            {
+                _callback?.Invoke(new Response { IsSuccessful = false, Message = "Not signed in" });
+                return;
+            }
+            SaveData(string.Empty,0,string.Empty);
+            _callback?.Invoke(new Response 
+            {
+                IsSuccessful = true, Message = string.Empty, IdToken = string.Empty, Identifier = string.Empty
+            });
+        }
+        
         private void SaveData(string _idToken, int _expiresIn, string _refreshToken)
         {
             currentIdToken = _idToken;
             tokenExpirationTime = DateTime.UtcNow.AddSeconds(_expiresIn);
             PlayerPrefs.SetString(REFRESH_TOKEN_KEY, _refreshToken);
             PlayerPrefs.Save();
-        }
-        
-        private void HandleUnsuccessfulRefreshIdToken(string _error)
-        {
-            callBack?.Invoke(new Response { IsSuccessful = false, Message = _error });
         }
     }
 }

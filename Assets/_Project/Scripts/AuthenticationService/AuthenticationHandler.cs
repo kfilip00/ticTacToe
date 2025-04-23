@@ -1,6 +1,5 @@
 using System;
 using Authentication;
-using Zenject;
 
 public class AuthenticationHandler
 {
@@ -10,7 +9,6 @@ public class AuthenticationHandler
     private string playerIdentifier;
     private string playerToken;
     
-    [Inject]
     public AuthenticationHandler(Config _config,IAuthenticatorFactory _authenticatorFactory, IWebRequests _webRequests)
     {
         authentication = _authenticatorFactory.Create(_config,_webRequests);

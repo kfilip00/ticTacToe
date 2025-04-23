@@ -1,30 +1,24 @@
+using System;
 using Authentication;
 using Configuration;
 using DataService;
+using UnityEngine;
 using UnitySignalR;
-using Zenject;
 
-public class DependencyInstaller : MonoInstaller
+public class DependencyInstaller : MonoBehaviour
 {
+    [SerializeField] private WebRequestHandler webRequestHandler;
     private AuthenticationHandler authentication;
     private DataHandler dataHandler;
     private SignalRHandler signalRHandler;
 
-    public override void InstallBindings()
+    private void Start()
     {
         Config _config = CreateConfig();
 
-        Container.BindInstance(_config).AsSingle();
-
-        Container.Bind<AuthenticatorFactory>().AsSingle();
-        Container.Bind<DataServiceFactory>().AsSingle();
-        Container.Bind<ClientFactory>().AsSingle();
-        Container.Bind<EnvironmentFactory>().AsSingle();
-
-        Container.Bind<WebRequestHandler>().AsSingle();
-        Container.Bind<AuthenticationHandler>().AsSingle();
-        Container.Bind<DataHandler>().AsSingle();
-        Container.Bind<SignalRHandler>().AsSingle();
+        authentication = new AuthenticationHandler(_config, new AuthenticatorFactory(), webRequestHandler);
+        dataHandler = new DataHandler(_config, new DataServiceFactory(), authentication, webRequestHandler);
+        signalRHandler = new SignalRHandler(_config, new ClientFactory(), new EnvironmentFactory());
     }
 
     private Config CreateConfig()

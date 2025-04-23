@@ -1,7 +1,5 @@
 using System;
-using Configuration;
 using Newtonsoft.Json;
-using Zenject;
 
 namespace UnitySignalR
 {
@@ -10,7 +8,6 @@ namespace UnitySignalR
         private IClient client;
         private IEnvironment environment;
 
-        [Inject]
         public SignalRHandler(Config _config,IClientFactory _clientFactory, IEnvironmentFactory _environmentFactory)
         {
             client = _clientFactory.CreateClient();

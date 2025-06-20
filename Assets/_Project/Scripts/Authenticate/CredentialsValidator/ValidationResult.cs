@@ -1,8 +1,11 @@
 using System;
 
-[Serializable]
-public class ValidationResult
+namespace Authenticate
 {
-    public bool IsValid;
-    public string ErrorMessage;
+    [Serializable]
+    public class ValidationResult
+    {
+        public bool IsValid;
+        public string ErrorMessage;
+    }
 }

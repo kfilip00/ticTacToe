@@ -10,12 +10,12 @@ namespace Test
         [SerializeField] private Configuration configuration;
         [SerializeField] private WebRequestHandler webRequestHandler;
 
-        private AuthenticationHandler authentication;
+        private IAuthentication authentication;
 
         [Button]
         public void Setup()
         {
-            authentication = new AuthenticationHandler(configuration.GetConfig(),new AuthenticatorFactory(), webRequestHandler);
+            authentication = new AuthenticatorFactory().Create(configuration.GetConfig(), webRequestHandler);
         }
         
         [Button]
@@ -104,7 +104,7 @@ namespace Test
         private void SendPasswordReset()
         {
             GetCredentials(out string _email,out string _ );
-            authentication.SendPasswordReset(_email, HandlePasswordResetResponse);
+            authentication.SendPasswordResetEmail(_email, HandlePasswordResetResponse);
         }
 
         private void HandlePasswordResetResponse(Response _response)
@@ -118,7 +118,7 @@ namespace Test
             Debug.Log("Sent password reset: "+_response.Message);
         }
 
-        public AuthenticationHandler GetAuthenticationHandler()
+        public IAuthentication GetAuthenticationHandler()
         {
             return authentication;
         }

@@ -3,79 +3,91 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SignUpUI : BasicScreen
+namespace Authenticate
 {
-    [SerializeField] private TMP_InputField email;
-    [SerializeField] private TMP_InputField password;
-    [SerializeField] private TMP_InputField confirmPassword;
-    [SerializeField] private Button signUp;
-    [SerializeField] private Button signIn;
-    
-    private void OnEnable()
+    public class SignUpUI : BasicScreen
     {
-        signUp.onClick.AddListener(SignUp);
-        signIn.onClick.AddListener(ShowSignIn);
-    }
+        [SerializeField] private TMP_InputField email;
+        [SerializeField] private TMP_InputField password;
+        [SerializeField] private TMP_InputField confirmPassword;
+        [SerializeField] private Button signUp;
+        [SerializeField] private Button signIn;
 
-    private void OnDisable()
-    {
-        signUp.onClick.RemoveListener(SignUp);
-        signIn.onClick.RemoveListener(ShowSignIn);
-    }
+        private ScreenSwitcher screenSwitcher;
+        private IAuthentication authenticationHandler;
 
-    private void SignUp()
-    {
-        string _email = email.text;
-        string _password = password.text;
-        ValidationResult _validationResult = CredentialsValidator.ValidateEmail(_email);
-        if (!_validationResult.IsValid)
+        public void Construct(ScreenSwitcher _screenSwitcher,IAuthentication _authenticationHandler)
         {
-            Debug.Log(_validationResult.ErrorMessage);
-            return;
+            screenSwitcher = _screenSwitcher;
+            authenticationHandler = _authenticationHandler;
         }
 
-        _validationResult = CredentialsValidator.ValidatePassword(_password);
-        if (!_validationResult.IsValid)
+        private void OnEnable()
         {
-            Debug.Log(_validationResult.ErrorMessage);
-            return;
+            signUp.onClick.AddListener(SignUp);
+            signIn.onClick.AddListener(ShowSignIn);
         }
 
-        string _confirmPassword = confirmPassword.text;
-        if (_password != _confirmPassword)
+        private void OnDisable()
         {
-            Debug.Log("Passwords don't match");
-            return;
+            signUp.onClick.RemoveListener(SignUp);
+            signIn.onClick.RemoveListener(ShowSignIn);
         }
-        
-        ManageInteractables(false);
-        AuthenticateUI.Instance.GetAuthenticationHandler().SignUp(_email,_password,HandleSignUpResponse);
-    }
 
-    private void HandleSignUpResponse(Response _response)
-    {
-        if (_response.IsSuccessful)
+        private void SignUp()
         {
-            AuthenticateUI.Instance.FinishAuthentication();
-            return;
+            string _email = email.text;
+            string _password = password.text;
+            ValidationResult _validationResult = CredentialsValidator.ValidateEmail(_email);
+            if (!_validationResult.IsValid)
+            {
+                Debug.Log(_validationResult.ErrorMessage);
+                return;
+            }
+
+            _validationResult = CredentialsValidator.ValidatePassword(_password);
+            if (!_validationResult.IsValid)
+            {
+                Debug.Log(_validationResult.ErrorMessage);
+                return;
+            }
+
+            string _confirmPassword = confirmPassword.text;
+            if (_password != _confirmPassword)
+            {
+                Debug.Log("Passwords don't match");
+                return;
+            }
+
+            ManageInteractables(false);
+            authenticationHandler.SignUp(_email, _password, HandleSignUpResponse);
         }
-        
-        ManageInteractables(true);
-        Debug.Log(_response.Message);
-    }
 
-    private void ShowSignIn()
-    {
-        AuthenticateUI.Instance.ShowSignIn();
-    }
+        private void HandleSignUpResponse(Response _response)
+        {
+            if (_response.IsSuccessful)
+            {
+                screenSwitcher.LoadMainMenu();
+                return;
+            }
+
+            ManageInteractables(true);
+            Debug.Log(_response.Message);
+        }
+
+        private void ShowSignIn()
+        {
+            screenSwitcher.ShowSignIn();
+        }
 
 
-    private void ManageInteractables(bool _status)
-    {
-        email.interactable = _status;
-        password.interactable = _status;
-        confirmPassword.interactable = _status;
-        signIn.interactable = _status;
-        signUp.interactable = _status;
+        private void ManageInteractables(bool _status)
+        {
+            email.interactable = _status;
+            password.interactable = _status;
+            confirmPassword.interactable = _status;
+            signIn.interactable = _status;
+            signUp.interactable = _status;
+        }
     }
 }

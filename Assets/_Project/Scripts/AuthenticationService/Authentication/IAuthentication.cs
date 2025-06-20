@@ -10,5 +10,7 @@ namespace Authentication
         void TryAutoSignIn(Action<Response> _callback);
         void SignOut(Action<Response> _callback);
         void SendPasswordResetEmail(string _email, Action<Response> _callback);
+        string GetPlayerIdentifier();
+        string GetPlayerToken();
     }
 }

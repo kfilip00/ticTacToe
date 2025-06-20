@@ -12,7 +12,7 @@ namespace Test
         [SerializeField] private Authentication authentication;
         [SerializeField] private string playerName;
         
-        private DataHandler dataHandler;
+        private IDataService dataHandler;
 
         [Button]
         private void Setup()
@@ -41,7 +41,7 @@ namespace Test
             }
 
             var _auth = authentication.GetAuthenticationHandler();
-            dataHandler = new DataHandler(configuration.GetConfig(),new DataServiceFactory(), _auth, webRequestHandler);
+            dataHandler = new DataServiceFactory().Create(configuration.GetConfig(), _auth, webRequestHandler);
         }
 
         [Button]

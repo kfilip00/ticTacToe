@@ -6,4 +6,5 @@ public class Config
 {
     public DatabaseType Database;
     public bool IsTesting;
+    public GameplayType Gameplay;
 }

@@ -3,60 +3,72 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PasswordResetUI : BasicScreen
+namespace Authenticate
 {
-    [SerializeField] private TMP_InputField email;
-    [SerializeField] private Button resetPassword;
-    [SerializeField] private Button signIn;
-    
-    private void OnEnable()
+    public class PasswordResetUI : BasicScreen
     {
-        resetPassword.onClick.AddListener(ResetPassword);
-        signIn.onClick.AddListener(ShowSignIn);
-    }
+        [SerializeField] private TMP_InputField email;
+        [SerializeField] private Button resetPassword;
+        [SerializeField] private Button signIn;
 
-    private void OnDisable()
-    {
-        resetPassword.onClick.RemoveListener(ResetPassword);
-        signIn.onClick.RemoveListener(ShowSignIn);
-    }
+        private ScreenSwitcher screenSwitcher;
+        private IAuthentication authenticationHandler;
 
-    private void ResetPassword()
-    {
-        string _email = email.text;
-        ValidationResult _validationResult = CredentialsValidator.ValidateEmail(_email);
-        if (!_validationResult.IsValid)
+        public void Construct(ScreenSwitcher _screenSwitcher,IAuthentication _authenticationHandler)
         {
-            Debug.Log(_validationResult.ErrorMessage);
-            return;
+            screenSwitcher = _screenSwitcher;
+            authenticationHandler = _authenticationHandler;
         }
 
-        ManageInteractables(false);
-        AuthenticateUI.Instance.GetAuthenticationHandler().SendPasswordReset(_email,HandleSendResetPasswordResponse);
-    }
-
-    private void HandleSendResetPasswordResponse(Response _response)
-    {
-        if (_response.IsSuccessful)
+        private void OnEnable()
         {
-            AuthenticateUI.Instance.FinishAuthentication();
-            return;
+            resetPassword.onClick.AddListener(ResetPassword);
+            signIn.onClick.AddListener(ShowSignIn);
         }
-        
-        ManageInteractables(true);
-        Debug.Log(_response.Message);
-    }
 
-    private void ShowSignIn()
-    {
-        AuthenticateUI.Instance.ShowSignIn();
-    }
+        private void OnDisable()
+        {
+            resetPassword.onClick.RemoveListener(ResetPassword);
+            signIn.onClick.RemoveListener(ShowSignIn);
+        }
+
+        private void ResetPassword()
+        {
+            string _email = email.text;
+            ValidationResult _validationResult = CredentialsValidator.ValidateEmail(_email);
+            if (!_validationResult.IsValid)
+            {
+                Debug.Log(_validationResult.ErrorMessage);
+                return;
+            }
+
+            ManageInteractables(false);
+            authenticationHandler.SendPasswordResetEmail(_email, HandleSendResetPasswordResponse);
+        }
+
+        private void HandleSendResetPasswordResponse(Response _response)
+        {
+            if (_response.IsSuccessful)
+            {
+                screenSwitcher.LoadMainMenu();
+                return;
+            }
+
+            ManageInteractables(true);
+            Debug.Log(_response.Message);
+        }
+
+        private void ShowSignIn()
+        {
+            screenSwitcher.ShowSignIn();
+        }
 
 
-    private void ManageInteractables(bool _status)
-    {
-        email.interactable = _status;
-        signIn.interactable = _status;
-        resetPassword.interactable = _status;
+        private void ManageInteractables(bool _status)
+        {
+            email.interactable = _status;
+            signIn.interactable = _status;
+            resetPassword.interactable = _status;
+        }
     }
 }

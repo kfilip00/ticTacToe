@@ -1,4 +1,5 @@
 using System;
+using Authentication;
 using UnityEngine;
 
 namespace DataService
@@ -9,13 +10,13 @@ namespace DataService
         private const string PLAYERS_KEY = "players";
         
         private readonly IWebRequests webRequests;
-        private AuthenticationHandler authentication;
+        private IAuthentication authentication;
         
         private string PlayersURL => $"{DATABASE_URL}/{PLAYERS_KEY}";
         private string PlayerURL => $"{PlayersURL}/{authentication.GetPlayerIdentifier()}";
         
         
-        public Firebase(AuthenticationHandler _authentication, IWebRequests _webRequests)
+        public Firebase(IAuthentication _authentication, IWebRequests _webRequests)
         {
             authentication = _authentication;
             webRequests = _webRequests;

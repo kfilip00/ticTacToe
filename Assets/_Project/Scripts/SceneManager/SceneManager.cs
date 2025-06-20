@@ -6,6 +6,7 @@ public class SceneManager : SceneLoader
 {
     public const string MAIN_MENU = "MainMenu";
     public const string AUTHENTICATE = "Authenticate";
+    public const string GAMEPLAY = "Gameplay";
     
     public static SceneManager Instance;
     
